@@ -1,4 +1,4 @@
-package JetProjectASD;
+package com.acme.edu;
 
 public class App {
 

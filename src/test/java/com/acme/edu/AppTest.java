@@ -1,4 +1,4 @@
-package JetProjectASD;
+package com.acme.edu;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
