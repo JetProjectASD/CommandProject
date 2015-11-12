@@ -10,12 +10,19 @@ public class ServerConnector {
     private ServerSender serverSender;
     private Socket clientSocket;
 
+    /**
+     * Constructor
+     * @param hostname IP address
+     */
     public ServerConnector(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
         serverSender = new ServerSender();
     }
 
+    /**
+     * install connection with server
+     */
     public void connectToSever(String name) throws IOException {
         if (clientSocket == null) {
             clientSocket = new Socket(hostname, port);
