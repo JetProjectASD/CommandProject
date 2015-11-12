@@ -13,6 +13,9 @@ public class ServerApp {
     private List<Socket> socketList;
     private Map<String, Socket> nameToSocketMap = new HashMap<>();
 
+    /**
+     * стартует порт и потоки запускает
+     */
     public ServerApp(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         start();

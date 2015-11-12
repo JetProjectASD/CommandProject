@@ -9,11 +9,19 @@ public class ServerListener implements Runnable {
     private int port;
     private BufferedReader reader;
 
+    /**
+     * Constructor for connection with server
+     * @param hostname IP address
+     */
     public ServerListener(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
 
+    /**
+     * Constructorfor read messange server
+     * @param reader
+     */
     public ServerListener(BufferedReader reader) {
         this.reader = reader;
     }

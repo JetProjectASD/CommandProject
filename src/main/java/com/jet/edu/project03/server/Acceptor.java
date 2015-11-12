@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * устанавливает соединение с клиентом
+ */
 public class Acceptor implements Runnable {
     private ServerSocket serverSocket;
     private Map<String, Socket> nameToSocketMap = new HashMap<>();
@@ -18,6 +21,9 @@ public class Acceptor implements Runnable {
         this.nameToSocketMap = nameToSocketMap;
     }
 
+    /**
+     * запускае слушатель сокета
+     */
     @Override
     public void run() {
         Socket socket = null;

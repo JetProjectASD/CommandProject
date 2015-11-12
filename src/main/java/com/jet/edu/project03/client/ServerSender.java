@@ -9,6 +9,9 @@ public class ServerSender {
     public ServerSender() {
     }
 
+    /**
+     * Send mess for server
+     */
     public String sendMessage(BufferedReader reader, BufferedWriter writer, String message) throws IOException {
         writeMessage(message, writer);
         return getResponse(reader);
