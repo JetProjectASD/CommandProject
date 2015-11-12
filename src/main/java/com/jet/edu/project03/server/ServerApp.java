@@ -20,7 +20,7 @@ public class ServerApp {
 
     public static void main(String[] args) {
         try {
-            ServerApp server = new ServerApp(40000);
+            ServerApp server = new ServerApp(40001);
             System.out.println("Server start...");
             server.start();
         } catch (IOException e) {
@@ -28,7 +28,7 @@ public class ServerApp {
         }
     }
     public ServerApp(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
+        this.serverSocket = new ServerSocket(port);
     }
 
     public void start() {

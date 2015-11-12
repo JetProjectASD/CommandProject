@@ -27,7 +27,8 @@ public class ClientWorker implements Runnable {
                 message += line;
             }
             for(Socket socket : sockets) {
-                sendMessageOnClient(System.currentTimeMillis() + ":" + message, socket);
+                //sendMessageOnClient(System.currentTimeMillis() + ":" + message, socket);
+                sendMessageOnClient("TRUE", socket);
             }
         } catch (IOException e) {
             e.printStackTrace();

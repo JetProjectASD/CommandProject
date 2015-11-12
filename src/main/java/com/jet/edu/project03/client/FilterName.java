@@ -3,17 +3,22 @@ package com.jet.edu.project03.client;
 import com.jet.edu.project03.exeptions.NameExeption;
 
 /**
- * Filter preffiks messange from ..
+ * Filter messange from user
  */
 public class FilterName implements Filter {
 
     private StringBuilder mes = new StringBuilder();
     ServerConnector connector;
 
+
+    private final static String SEND = "/snd";
+    private final static String HISTORY = "/hist";
+    private final static String NAME = "/chid";
+    private final static String ROOM = "/chroom";
+
     public FilterName (ServerConnector connector){
         this.connector = connector;
     }
-
 
     /**
      * Filter messanges
@@ -29,7 +34,6 @@ public class FilterName implements Filter {
         }
 
 
-
         switch (preffiks) {
             case SEND: {
                 if(connectFlag) {
@@ -40,7 +44,6 @@ public class FilterName implements Filter {
                 } else {
                     return "ERR";
                 }
-
             }
             case HISTORY: {
                 return  "ERR";
@@ -50,6 +53,9 @@ public class FilterName implements Filter {
                     return "ERR";
                 }
                 return mes.toString();
+            }
+            case ROOM : {
+                return "ERR";
             }
             default: {
                 throw new NameExeption("не корректная команда");
@@ -62,9 +68,7 @@ public class FilterName implements Filter {
     }
 
 
-    private final static String SEND = "/snd";
-    private final static String HISTORY = "/hist";
-    private final static String NAME = "/chid";
+
 
 
 }

@@ -10,27 +10,24 @@ import java.io.InputStreamReader;
 /**
  * Listen consoe and send messages
  */
-public class Messenger {
+public class Client {
 
     BufferedWriter writer;
-    ServerConnector connector = new ServerConnector("127.0.0.1", 40000);
-
-
+    ServerConnector connector = new ServerConnector("127.0.0.1", 40001);
     boolean connectFlag;
+    String name;
     FilterName filter = new FilterName(connector);
 
 
     /**
      * constructor which contains stream writer
      */
-    public Messenger() {
+    public Client() {
         System.out.println("Введите имя начиная с команды : /chid ");
     }
 
-    /**
-     * Listen console and get mesasge
-     */
-    public String listen() throws NameExeption, IOException {
+
+    private String listen() throws NameExeption, IOException {
         BufferedReader readder = new BufferedReader(new InputStreamReader(System.in));
         String messange = readder.readLine();
         String result = filter.filter(messange, connectFlag);
@@ -46,14 +43,13 @@ public class Messenger {
         if (!listen.equals("ERR")) {
             sendMessege(listen);
         }
+        System.out.println("Введите номер комнаты начиная с команды : /chroom ");
 
     }
 
 
     private void sendMessege(String name) throws IOException {
-        if (connector.connectToSever(name)) {
-            System.out.println("все хорошо");
-        }
+        connector.connectToSever(name);
         System.out.println("конец");
 
     }

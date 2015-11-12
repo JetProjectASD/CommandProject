@@ -25,6 +25,7 @@ public class ServerConnector {
      */
     public void connectToSever(String name) throws IOException {
         clientSocket = new Socket(hostname, port);
+        serverSender = new ServerSender(clientSocket);
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
              BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
