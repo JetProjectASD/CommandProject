@@ -8,8 +8,8 @@ public class ClientApp {
 
     public static void main(String[] args) throws NameExeption, IOException {
 
-        Client client = new Client();
+        //Client client = new Client();
 
-        client.start();
+//        client.start();
     }
 }

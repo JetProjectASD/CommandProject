@@ -1,5 +1,7 @@
 package com.jet.edu.project03.test;
 
+import com.jet.edu.project03.client.ServerListener;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -20,6 +22,7 @@ public class Messenger extends Thread {
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
 
             String str;
+            new Thread(new ServerListener(reader)).start();
             while (!(str = ConsoleHelper.readString()).equals("exit")) {
                 writer.write(str);
                 writer.newLine();
@@ -31,6 +34,26 @@ public class Messenger extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class serverListener implements Runnable {
+
+        private BufferedReader bufferedReader;
+
+        public serverListener(BufferedReader bufferedReader) {
+            this.bufferedReader = bufferedReader;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    readStringFromServer(bufferedReader);
+                } catch (IOException e) {
+                    break;
+                }
+            }
         }
     }
 
