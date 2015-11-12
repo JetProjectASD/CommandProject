@@ -22,14 +22,14 @@ public class Messenger extends Thread {
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
 
             String str;
-            new Thread(new ServerListener(reader)).start();
+            new Thread(new serverListener(reader)).start();
             while (!(str = ConsoleHelper.readString()).equals("exit")) {
                 writer.write(str);
                 writer.newLine();
                 writer.flush();
 
-                String s = readStringFromServer(reader);
-                System.out.println(s);
+//                String s = readStringFromServer(reader);
+//                System.out.println(s);
             }
 
         } catch (IOException e) {
@@ -49,7 +49,7 @@ public class Messenger extends Thread {
         public void run() {
             while (true) {
                 try {
-                    readStringFromServer(bufferedReader);
+                    System.out.println(readStringFromServer(bufferedReader));
                 } catch (IOException e) {
                     break;
                 }
