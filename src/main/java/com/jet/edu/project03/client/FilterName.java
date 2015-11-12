@@ -30,7 +30,10 @@ public class FilterName implements Filter {
         switch (preffiks) {
             case SEND: {
                 if(connectFlag) {
-
+                    if(mes.length() > 150) {
+                       return "ERR";
+                    }
+                    return "ok " + mes;
                 }
 
                 break;
