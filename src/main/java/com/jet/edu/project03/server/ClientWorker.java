@@ -1,9 +1,6 @@
 package com.jet.edu.project03.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +9,7 @@ public class ClientWorker implements Runnable {
     private Socket clientSocket;
     private List<Socket> sockets;
     private Map<String, Socket> nameToSocketMap;
+    private BufferedReader bufferedReader;
 
     public ClientWorker(Socket socket, List<Socket> socketList, Map<String, Socket> nameToSocket) {
         this.clientSocket = socket;
@@ -22,19 +20,14 @@ public class ClientWorker implements Runnable {
     @Override
     public void run() {
         try {
-            if(!sockets.contains(clientSocket)) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String name = "";
-                while (bufferedReader.ready() && (name = bufferedReader.readLine()) != null) {
-                }
-                if(nameToSocketMap.get(name).equals(clientSocket)) {
-                    sendMessageOnClient("TRUE. Connect create", clientSocket);
-                    nameToSocketMap.put(name, clientSocket);
-                    sockets.add(clientSocket);
-                } else {
-                    sendMessageOnClient("FALSE. Didnt connect to server. Please write unqiue name", clientSocket);
-                    clientSocket.close();
-                }
+            bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String message = "";
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                message += line;
+            }
+            for(Socket socket : sockets) {
+                sendMessageOnClient(System.currentTimeMillis() + ":" + message, socket);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class Acceptor implements Runnable {
     private ServerSocket serverSocket;
-    private Map<String, Socket> nameToSocketMap = new HashMap<>();
+    private Map<String, Socket> nameToSocketMap;
     private List<Socket> sockets;
 
     public Acceptor(ServerSocket serverSocket, List<Socket> socketList, Map<String, Socket> nameToSocketMap) {
@@ -28,7 +28,10 @@ public class Acceptor implements Runnable {
     public void run() {
         Socket socket = null;
         try {
+            System.out.println("Wait for client connect...");
             socket = serverSocket.accept();
+            System.out.println("Client connect...");
+            sockets.add(socket);
         } catch (IOException e) {
             e.printStackTrace();
         }
