@@ -1,4 +1,4 @@
-package com.jet.edu.project03.test;
+package com.jet.edu.project03.clients;
 
 import java.io.BufferedReader;
 import java.io.IOException;
