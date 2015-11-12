@@ -76,8 +76,8 @@ public class ServerApp {
                     String message = readStringFromServer(bufferedReader);
                     sendToAllClients(message);
                 }
-            } catch (IOException ex) {
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
