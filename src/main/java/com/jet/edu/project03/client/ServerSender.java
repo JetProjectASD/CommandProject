@@ -3,10 +3,11 @@ package com.jet.edu.project03.client;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.Socket;
 
-public class ServerSender {
+public class ServerSender implements Runnable{
 
-    public ServerSender() {
+    public ServerSender(Socket clientSocket) {
     }
 
     /**
@@ -15,6 +16,12 @@ public class ServerSender {
     public String sendMessage(BufferedReader reader, BufferedWriter writer, String message) throws IOException {
         writeMessage(message, writer);
         return getResponse(reader);
+    }
+
+
+    @Override
+    public void run() {
+
     }
 
     private String getResponse(BufferedReader reader) throws IOException {
@@ -33,4 +40,5 @@ public class ServerSender {
         writer.newLine();
         writer.flush();
     }
+
 }
