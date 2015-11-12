@@ -10,7 +10,7 @@ import java.util.List;
 public class ServerApp {
 
     private ServerSocket serverSocket;
-    private List<Socket> sockets = new LinkedList<>();
+    private final List<Socket> sockets = new LinkedList<>();
 
 
     /**
@@ -48,7 +48,9 @@ public class ServerApp {
                 System.out.println("Wait for client connect...");
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connect...");
-                sockets.add(socket);
+                synchronized (sockets) {
+                    sockets.add(socket);
+                }
                 new Thread(new ClientWorker(socket)).start();
             } catch (IOException e) {
                 e.printStackTrace();
