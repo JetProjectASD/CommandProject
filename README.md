@@ -1,4 +1,4 @@
-Трудов Сергей
+Трудов Сергей.
 # CommandProject
 Test
 Dmitriy +
