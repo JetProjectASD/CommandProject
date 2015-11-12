@@ -1,4 +1,4 @@
-package com.acme.edu;
+package com.jet.edu.project03;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
