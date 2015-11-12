@@ -1,5 +1,7 @@
 package com.jet.edu.project03.client;
 
+import com.jet.edu.project03.exeptions.NameExeption;
+
 /**
  * Filter preffiks messange from ..
  */
@@ -20,9 +22,10 @@ public class FilterName implements Filter {
      */
     @Override
     public String filter(String message, boolean connectFlag) throws NameExeption {
-        String preffiks = message.split(" ")[0];
-        for (int i = 1; i < preffiks.length(); i++) {
-            mes.append(message.split(" ")[i]).append(System.lineSeparator());
+        String[] stringArray = message.split(" ");
+        String preffiks = stringArray[0];
+        for (int i = 1; i < stringArray.length; i++) {
+            mes.append(message.split(" ")[i]);
         }
 
 
@@ -33,18 +36,20 @@ public class FilterName implements Filter {
                     if(mes.length() > 150) {
                        return "ERR";
                     }
-                    return "ok " + mes;
+                    return mes.toString();
+                } else {
+                    return "ERR";
                 }
 
-                break;
             }
             case HISTORY: {
-
-                break;
+                return  "ERR";
             }
             case NAME: {
-
-                break;
+                if(mes.length() > 50){
+                    return "ERR";
+                }
+                return mes.toString();
             }
             default: {
                 throw new NameExeption("не корректная команда");
@@ -52,7 +57,7 @@ public class FilterName implements Filter {
             }
         }
 
-        return null;
+
 
     }
 

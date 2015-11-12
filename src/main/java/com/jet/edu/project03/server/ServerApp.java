@@ -32,6 +32,6 @@ public class ServerApp {
     }
 
     public void start() {
-        new Thread(new Acceptor(serverSocket, socketList, nameToSocketMap));
+        new Thread(new Acceptor(serverSocket, socketList, nameToSocketMap)).start();
     }
 }

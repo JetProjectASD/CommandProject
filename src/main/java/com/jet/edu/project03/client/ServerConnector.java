@@ -23,23 +23,21 @@ public class ServerConnector {
     /**
      * install connection with server
      */
-    public void connectToSever(String name) throws IOException {
-        if (clientSocket == null) {
+    public boolean connectToSever(String name) throws IOException {
             clientSocket = new Socket(hostname, port);
-        }
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
              BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-            while (true) {
-                if ("TRUE".equals(serverSender.sendMessage(reader, writer, name))) {
+            String mesFromServer = serverSender.sendMessage(reader, writer, name);
+            if ("TRUE".equals(mesFromServer)) {
                     ServerListener serverListener = new ServerListener(reader);
                     Thread listener = new Thread(serverListener);
                     listener.start();
-                    return;
-                }
+                    return true;
+                } else {
+                return false;
             }
         }
-
     }
 
 

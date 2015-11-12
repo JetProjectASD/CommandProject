@@ -27,14 +27,16 @@ public class Acceptor implements Runnable {
     @Override
     public void run() {
         Socket socket = null;
-        try {
-            System.out.println("Wait for client connect...");
-            socket = serverSocket.accept();
-            System.out.println("Client connect...");
-            sockets.add(socket);
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (true) {
+            try {
+                System.out.println("Wait for client connect...");
+                socket = serverSocket.accept();
+                System.out.println("Client connect...");
+                sockets.add(socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            new Thread(new ClientWorker(socket, sockets, nameToSocketMap)).start();
         }
-        new Thread(new ClientWorker(socket, sockets, nameToSocketMap));
     }
 }

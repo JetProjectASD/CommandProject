@@ -23,7 +23,7 @@ public class ClientWorker implements Runnable {
             bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String message = "";
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+            while (bufferedReader.ready() && (line = bufferedReader.readLine()) != null) {
                 message += line;
             }
             for(Socket socket : sockets) {
@@ -35,8 +35,9 @@ public class ClientWorker implements Runnable {
     }
 
     private void sendMessageOnClient(String message, Socket clientSocket) throws IOException{
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-        objectOutputStream.writeUTF(message);
+        BufferedWriter objectOutputStream = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        objectOutputStream.write(message);
+        objectOutputStream.newLine();
         objectOutputStream.flush();
     }
 }

@@ -1,4 +1,4 @@
-package com.jet.edu.project03.client;
+package com.jet.edu.project03.exeptions;
 
 /**
  * name errors uncorrect comands
