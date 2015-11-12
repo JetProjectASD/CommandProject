@@ -3,7 +3,7 @@ package com.jet.edu.project03.client;
 import com.jet.edu.project03.exeptions.NameExeption;
 
 /**
- * Filter messange from user
+ * FilterName message from user
  */
 public class FilterName implements Filter {
 
@@ -21,20 +21,20 @@ public class FilterName implements Filter {
     }
 
     /**
-     * Filter messanges
+     * FilterName messages
      *
-     * @param message from consol
+     * @param message from console
      */
     @Override
     public String filter(String message, boolean connectFlag) throws NameExeption {
         String[] stringArray = message.split(" ");
-        String preffiks = stringArray[0];
+        String pref = stringArray[0];
         for (int i = 1; i < stringArray.length; i++) {
             mes.append(message.split(" ")[i]);
         }
 
 
-        switch (preffiks) {
+        switch (pref) {
             case SEND: {
                 if(connectFlag) {
                     if(mes.length() > 150) {

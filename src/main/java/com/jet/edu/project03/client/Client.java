@@ -3,7 +3,6 @@ package com.jet.edu.project03.client;
 import com.jet.edu.project03.exeptions.NameExeption;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -12,11 +11,9 @@ import java.io.InputStreamReader;
  */
 public class Client {
 
-    BufferedWriter writer;
-    ServerConnector connector = new ServerConnector("127.0.0.1", 40001);
-    boolean connectFlag;
-    String name;
-    FilterName filter = new FilterName(connector);
+    private ServerConnector connector = new ServerConnector("127.0.0.1", 40001);
+    private boolean connectFlag;
+    private FilterName filter = new FilterName(connector);
 
 
     /**
@@ -28,10 +25,9 @@ public class Client {
 
 
     private String listen() throws NameExeption, IOException {
-        BufferedReader readder = new BufferedReader(new InputStreamReader(System.in));
-        String messange = readder.readLine();
-        String result = filter.filter(messange, connectFlag);
-        return result;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String message = reader.readLine();
+        return filter.filter(message, connectFlag);
     }
 
     /**
