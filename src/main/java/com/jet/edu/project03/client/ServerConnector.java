@@ -31,11 +31,11 @@ public class ServerConnector {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
              BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
             while (true) {
-                if ("OK".equals(serverSender.sendMessage(reader, writer, name))) {
+                if ("TRUE".equals(serverSender.sendMessage(reader, writer, name))) {
                     ServerListener serverListener = new ServerListener(reader);
                     Thread listener = new Thread(serverListener);
                     listener.start();
-                    break;
+                    return;
                 }
             }
         }
