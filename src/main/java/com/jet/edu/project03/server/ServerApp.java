@@ -10,7 +10,7 @@ import java.util.List;
 public class ServerApp {
 
     private ServerSocket serverSocket;
-    private List<Socket> sockets = new LinkedList<>();
+    private final List<Socket> sockets = new LinkedList<>();
 
 
     /**
@@ -34,6 +34,30 @@ public class ServerApp {
         new Thread(new Acceptor()).start();
     }
 
+    private String readStringFromClient(BufferedReader reader) throws IOException {
+        while (true) {
+            String result;
+            if (reader.ready() && (result = reader.readLine()) != null) {
+                return result;
+            }
+        }
+    }
+
+    private void sendToAllClients(String message) {
+        synchronized (sockets) {
+            for (Socket socket : sockets) {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                    writer.write(message);
+                    writer.newLine();
+                    writer.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private class Acceptor implements Runnable {
 
         @Override
@@ -48,7 +72,9 @@ public class ServerApp {
                 System.out.println("Wait for client connect...");
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connect...");
-                sockets.add(socket);
+                synchronized (sockets) {
+                    sockets.add(socket);
+                }
                 new Thread(new ClientWorker(socket)).start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -57,9 +83,7 @@ public class ServerApp {
     }
 
     private class ClientWorker implements Runnable {
-        Socket clientSocket;
-        BufferedReader bufferedReader;
-        BufferedWriter bufferedWriter;
+        private Socket clientSocket;
 
         public ClientWorker(Socket socket) {
             this.clientSocket = socket;
@@ -67,9 +91,9 @@ public class ServerApp {
 
         @Override
         public void run() {
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                bufferedWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
+                
                 while (true) {
                     String message = readStringFromClient(bufferedReader);
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -86,26 +110,5 @@ public class ServerApp {
                     "/" + dateTime.getMonthValue() + "/" + dateTime.getYear() + "]";
         }
 
-    }
-    private String readStringFromClient(BufferedReader reader) throws IOException {
-        while (true) {
-            String result;
-            if (reader.ready() && (result = reader.readLine()) != null) {
-                return result;
-            }
-        }
-    }
-
-    private synchronized void sendToAllClients(String message) {
-        try {
-            for (Socket socket : sockets) {
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                writer.write(message);
-                writer.newLine();
-                writer.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
