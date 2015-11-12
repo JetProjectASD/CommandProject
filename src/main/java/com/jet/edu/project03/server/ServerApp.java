@@ -3,16 +3,14 @@ package com.jet.edu.project03.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class ServerApp {
 
     private ServerSocket serverSocket;
     private List<Socket> sockets = new LinkedList<>();
-    private Map<Socket, User> socketToUserMap = new HashMap<>();
 
 
     /**
@@ -73,16 +71,23 @@ public class ServerApp {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
                 while (true) {
-                    String message = readStringFromServer(bufferedReader);
-                    sendToAllClients(message);
+                    String message = readStringFromClient(bufferedReader);
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    sendToAllClients(getDateTimeFormat(dateTime) + " " + message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        private String getDateTimeFormat(LocalDateTime dateTime) {
+            return "[" + dateTime.getHour() + ":" + dateTime.getMinute() +
+                    ":" + dateTime.getSecond() + " " + dateTime.getDayOfMonth() +
+                    "/" + dateTime.getMonthValue() + "/" + dateTime.getYear() + "]";
+        }
+
     }
-    private String readStringFromServer(BufferedReader reader) throws IOException {
+    private String readStringFromClient(BufferedReader reader) throws IOException {
         while (true) {
             String result;
             if (reader.ready() && (result = reader.readLine()) != null) {
