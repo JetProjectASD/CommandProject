@@ -45,9 +45,6 @@ public class ReadMessenger extends Thread {
 
             sendMessage(writer, "READER USER_ID");
             sendMessage(writer, String.valueOf(id));
-            System.out.println("id send to server");
-            System.out.println(id);
-
             if ((takeMessage(reader).equals("OK"))) {
                 writeToLocalConsole(reader);
             }
@@ -71,7 +68,6 @@ public class ReadMessenger extends Thread {
         try(ServerSocket readerServerSocket = new ServerSocket(localPort);
             Socket socket = readerServerSocket.accept()) {
             id = Long.parseLong(takeMessage(new BufferedReader(new InputStreamReader(socket.getInputStream()))));
-            System.out.println("id get");
         } catch (IOException e) {
             e.printStackTrace();
         }

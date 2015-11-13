@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Helper for quck using console
+ * Helper for quick using console
  */
 public class ConsoleHelper {
 
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
     /**
      * Write message to console
      * @param message from user

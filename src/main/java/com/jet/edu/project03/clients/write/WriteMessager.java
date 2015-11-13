@@ -39,8 +39,6 @@ public class WriteMessager extends Thread {
 
             sendMessage(writer, "CONNECT");
             long sessionId = Long.parseLong(takeMessage(reader));
-            System.out.println("id get: " + sessionId);
-
             if ((takeMessage(reader).equals("OK"))) {
                 sendIdToReader(sessionId);
                 readConsole(writer);
@@ -50,27 +48,27 @@ public class WriteMessager extends Thread {
         }
     }
 
-    private void readConsole(BufferedWriter writer) throws IOException {
-        String str;
-        while ((str = ConsoleHelper.readString()) != null) {
-            String[] split = str.split(" ");
-            try {
-                String message;
-                if (!split[0].isEmpty() && (message = deletePrefixFromMessage(split[0], str)).length() < 150) {
-                    sendCommandAndMessage(writer, split[0], message);
-                }
-            } catch (SomeException e) {
-                ConsoleHelper.writeMessage("Ввод не корректен.");
-            }
-        }
-    }
+//    private void readConsole(BufferedWriter writer) throws IOException {
+//        String str;
+//        while ((str = ConsoleHelper.readString()) != null) {
+//            String[] split = str.split(" ");
+//            try {
+//                String message;
+//                if (!split[0].isEmpty() && (message = deletePrefixFromMessage(split[0], str)).length() < 150) {
+//                    sendCommandAndMessage(writer, split[0], message);
+//                }
+//            } catch (SomeException e) {
+//                ConsoleHelper.writeMessage("Ввод не корректен.");
+//            }
+//        }
+//    }
 
-    private void sendCommandAndMessage(BufferedWriter writer, String prefix, String message) throws SomeException, IOException {
-        String commandToServer = IDsFiltering.getPrefix(prefix);
-        sendMessage(writer, commandToServer);
-        sendMessage(writer, message);
-        ConsoleHelper.writeMessage(commandToServer + " " + message);
-    }
+//    private void sendCommandAndMessage(BufferedWriter writer, String prefix, String message) throws SomeException, IOException {
+//        String commandToServer = IDsFiltering.getPrefix(prefix);
+//        sendMessage(writer, commandToServer);
+//        sendMessage(writer, message);
+//        ConsoleHelper.writeMessage(commandToServer + " " + message);
+//    }
 
     private void sendIdToReader(long sessionId) throws IOException {
         try (Socket socket = new Socket(host, localPort)) {
@@ -81,5 +79,40 @@ public class WriteMessager extends Thread {
 
     private String deletePrefixFromMessage(String prefix, String message) {
         return message.replaceFirst(prefix + " ", "");
+    }
+
+    private void sendCommandAndMessage(BufferedWriter writer, String prefix, String message) throws SomeException, IOException {
+        message = deletePrefixFromMessage(prefix, message);
+        String commandToServer = IDsFiltering.getPrefix(prefix);
+
+        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer) ) {
+            throw new SomeException("Incorrect Name.");
+        }
+
+        sendMessage(writer, commandToServer);
+        sendMessage(writer, message);
+        ConsoleHelper.writeMessage(commandToServer + " " + message);
+    }
+
+    private boolean checkName(String message, String commandToServer) {
+        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 50 && !message.contains(" ");
+    }
+
+    private boolean checkSend(String message, String commandToServer) {
+        return commandToServer.equals(IDsFiltering.SEND.toString()) && message.length() < 150;
+    }
+
+    private void readConsole(BufferedWriter writer) throws IOException {
+        String str;
+        while ((str = ConsoleHelper.readString()) != null) {
+            String[] split = str.split(" ");
+            try {
+                if (!split[0].isEmpty()) {
+                    sendCommandAndMessage(writer, split[0], str);
+                }
+            } catch (SomeException e) {
+                ConsoleHelper.writeMessage("Not correct input.");
+            }
+        }
     }
 }

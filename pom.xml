@@ -49,5 +49,11 @@
             <artifactId>derbyclient</artifactId>
             <version>10.12.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

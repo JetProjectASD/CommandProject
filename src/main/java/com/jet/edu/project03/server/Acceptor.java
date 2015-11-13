@@ -10,7 +10,7 @@ public class Acceptor implements Runnable {
 
     private ExecutorService pool;
     private ServerSocket serverSocket;
-    private List<User> users;
+    private final List<User> users;
 
     public Acceptor(ExecutorService pool, ServerSocket serverSocket, List<User> users) {
 
