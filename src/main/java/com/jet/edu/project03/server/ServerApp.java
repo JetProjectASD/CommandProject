@@ -2,8 +2,6 @@ package com.jet.edu.project03.server;
 
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -12,8 +10,6 @@ import java.util.concurrent.Executors;
 /**
  * Server control
  */
-import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
-
 /**
  * Server
  */
