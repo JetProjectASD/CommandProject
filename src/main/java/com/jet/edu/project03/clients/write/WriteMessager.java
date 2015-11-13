@@ -12,12 +12,14 @@ import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 /**
  * New thread for wtite user messages in console
  */
+import static com.jet.edu.project03.clients.UtilitiesMessaging.sendMessage;
+import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 public class WriteMessager extends Thread {
 
     private final String host;
     private final int port;
-    private int localPort;
+    private final int localPotr;
 
     /**
      * Constructor which install IP address and port
@@ -25,7 +27,7 @@ public class WriteMessager extends Thread {
     public WriteMessager(String host, int port, int localPort) {
         this.host = host;
         this.port = port;
-        this.localPort = localPort;
+        this.localPotr = localPort;
     }
 
     /**
