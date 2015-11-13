@@ -4,10 +4,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,7 +59,6 @@ public class ServerApp {
     private String readStringFromClient(User user, BufferedReader reader, BufferedWriter writer) throws IOException {
         while (true) {
             String result = takeMessage(reader);
-//            if ((result = takeMessage(reader)) != null) {
                 if (result.equals("CONNECT")) {
                     sendToOneClient(++pseudoUserId + "", writer);
                     sendToOneClient("OK", writer);
@@ -219,7 +216,6 @@ public class ServerApp {
                     ":" + dateTime.getSecond() + " " + dateTime.getDayOfMonth() +
                     "/" + dateTime.getMonthValue() + "/" + dateTime.getYear() + "]";
         }
-
     }
 
     private class SocketStreamListener implements Runnable {

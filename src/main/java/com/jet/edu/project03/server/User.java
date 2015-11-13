@@ -29,7 +29,7 @@ public class User {
      * Constructor
      */
     public User(Socket socket) {
-
+        this.userSocket = socket;
     }
 
     /**
