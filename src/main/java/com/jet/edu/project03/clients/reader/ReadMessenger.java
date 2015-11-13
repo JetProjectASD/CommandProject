@@ -41,6 +41,7 @@ public class ReadMessenger extends Thread {
                     try {
                         ConsoleHelper.writeMessage(takeMessage(reader));
                     } catch (IOException e) {
+                        e.printStackTrace();
                         break;
                     }
                 }

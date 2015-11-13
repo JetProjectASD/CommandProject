@@ -49,7 +49,6 @@ public class ServerApp {
     private String readStringFromClient(User user, BufferedReader reader, BufferedWriter writer) throws IOException {
         while (true) {
             String result = takeMessage(reader);
-//            if ((result = takeMessage(reader)) != null) {
                 if (result.equals("CONNECT")) {
                     sendToOneClient(++pseudoUserId + "", writer);
                     sendToOneClient("OK", writer);
@@ -97,7 +96,6 @@ public class ServerApp {
                 }
                 return result;
             }
-//        }
     }
 
     private synchronized void sendBuffer() {
