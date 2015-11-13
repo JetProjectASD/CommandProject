@@ -33,7 +33,7 @@ public class ServerApp {
      */
     public static void main(String[] args) {
         try {
-            ServerApp server = new ServerApp(40001);
+            ServerApp server = new ServerApp(40002);
             System.out.println("Server start...");
             server.start();
         } catch (IOException e) {
@@ -67,6 +67,7 @@ public class ServerApp {
                 }
                 if (result.equals("READER USER_ID")) {
                     result = takeMessage(reader);
+                    System.out.println(result);
                     long id = Long.parseLong(result);
                     synchronized (users) {
                         users.remove(user);

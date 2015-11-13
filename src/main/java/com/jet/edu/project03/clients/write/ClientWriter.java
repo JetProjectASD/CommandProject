@@ -9,7 +9,7 @@ public class ClientWriter {
      */
     public static void main(String[] args) {
         //ПРОВЕРКИ АРГУМЕНТОВ!!!
-        int port = 40001;
+        int port = 40002;
         WriteMessager messenger = new WriteMessager("127.0.0.1", port);
         messenger.start();
     }

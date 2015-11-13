@@ -9,7 +9,7 @@ import java.net.Socket;
  * contains all information about user - name, room, messsage
  */
 public class User {
-    private String name;
+    private String name = "";
     private String room;
     private String message;
     private long id = -1;
