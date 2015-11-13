@@ -8,9 +8,9 @@ import java.util.concurrent.ExecutorService;
 
 public class Acceptor implements Runnable {
 
+    private final List<User> users;
     private ExecutorService pool;
     private ServerSocket serverSocket;
-    private final List<User> users;
 
     public Acceptor(ExecutorService pool, ServerSocket serverSocket, List<User> users) {
 

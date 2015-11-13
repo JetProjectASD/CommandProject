@@ -3,10 +3,12 @@ package com.jet.edu.project03.server;
 import java.util.List;
 
 public class BufferSender implements Runnable {
-    private final List<String> messageBuffer;
-    private Printer historyFileLogger;
+
     private final static String FILE_NAME = "chatHistory.txt";
     private final static String ENCODING = "UTF-8";
+
+    private final List<String> messageBuffer;
+    private Printer historyFileLogger;
 
     public BufferSender(List<String> messageBuffer) {
         this.messageBuffer = messageBuffer;
@@ -24,7 +26,7 @@ public class BufferSender implements Runnable {
 
     private synchronized void sendBuffer() {
         StringBuilder builder = new StringBuilder();
-        for(String string : messageBuffer) {
+        for (String string : messageBuffer) {
             builder.append(string).append(System.lineSeparator());
         }
         messageBuffer.clear();

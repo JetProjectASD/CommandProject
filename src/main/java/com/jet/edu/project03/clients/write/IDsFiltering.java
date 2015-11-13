@@ -15,7 +15,7 @@ public enum IDsFiltering {
     }
 
     public static String getPrefix(String message) throws SomeException {
-        for (IDsFiltering iDsFiltering: IDsFiltering.values()) {
+        for (IDsFiltering iDsFiltering : IDsFiltering.values()) {
             if (message.startsWith(iDsFiltering.prefix))
                 return iDsFiltering.toString();
         }

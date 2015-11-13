@@ -10,8 +10,10 @@ import java.io.InputStreamReader;
 public class ConsoleHelper {
 
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
     /**
      * Write message to console
+     *
      * @param message from user
      */
     public static void writeMessage(String message) {
@@ -20,6 +22,7 @@ public class ConsoleHelper {
 
     /**
      * Read messages from console
+     *
      * @return message to client
      */
     public static String readString() {
@@ -27,7 +30,7 @@ public class ConsoleHelper {
             try {
                 return reader.readLine();
             } catch (IOException e) {
-                writeMessage("Произошла ошибка при попытке ввода сообщения. Попробуйте еще раз.");
+                writeMessage("An error occurred while trying to write the message. Try again.");
             }
         }
     }

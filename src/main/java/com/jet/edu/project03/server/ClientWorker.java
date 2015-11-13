@@ -9,12 +9,14 @@ import java.util.concurrent.ExecutorService;
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 public class ClientWorker implements Runnable {
-    private  InputStream inputStream;
-    private  OutputStream outputStream;
-    private User user;
-    private long pseudoUserId;
+
     private final List<String> messageBuffer = new LinkedList<>();
     private final List<User> users;
+
+    private long pseudoUserId;
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    private User user;
     private ExecutorService pool;
 
     public ClientWorker(User user, List<User> users, ExecutorService pool, Long pseudoUserId) {
@@ -50,6 +52,7 @@ public class ClientWorker implements Runnable {
             System.out.println("after send all");
         }
     }
+
     private String readStringFromClient(User user, BufferedReader reader, BufferedWriter writer) throws IOException {
         while (true) {
             String result = takeMessage(reader);
@@ -65,8 +68,8 @@ public class ClientWorker implements Runnable {
                 long id = Long.parseLong(result);
                 synchronized (users) {
                     users.remove(user);
-                    for(User user_ : users) {
-                        if(user_.getId() == id) {
+                    for (User user_ : users) {
+                        if (user_.getId() == id) {
                             sendToOneClient("OK", new BufferedWriter(new OutputStreamWriter(user.getUserOutputStream())));
                             user_.setUserOutputStream(user.getUserOutputStream());
                             System.out.println("user id set");
@@ -80,8 +83,9 @@ public class ClientWorker implements Runnable {
                 result = takeMessage(reader);
                 System.out.println(result);
                 synchronized (users) {
-                    for(User user_ : users) {
-                        if(user_.getName().equals(result)) {
+                    ////////////////////// УЗНАТЬ ПОЧЕМУ РАБОТАЕТ?!//////////////////////////////////////
+                    for (User user_ : users) {
+                        if (user_.getName().equals(result)) {
                             System.out.println("name non set");
                             sendToOneClient("Name is occupied", new BufferedWriter(new OutputStreamWriter(user_.getUserOutputStream())));
                             return "";
@@ -92,6 +96,7 @@ public class ClientWorker implements Runnable {
                             return "";
                         }
                     }
+                    //////////////////////////////////////////////////////////////////////////////////////
                 }
             } else if (result.equals("SEND")) {
                 result = takeMessage(reader);

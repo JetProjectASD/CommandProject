@@ -10,7 +10,7 @@ import static com.jet.edu.project03.clients.UtilitiesMessaging.sendMessage;
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 /**
- * New thread for wtite user messages in console
+ * New thread for write user messages in console
  */
 
 public class WriteMessager extends Thread {
@@ -29,7 +29,8 @@ public class WriteMessager extends Thread {
     }
 
     /**
-     * Write any messages in the console while user not write "exit" - command for stop client
+     * Write any messages in the console while user
+     * not write "exit" - command for stop client
      */
     @Override
     public void run() {
@@ -48,28 +49,6 @@ public class WriteMessager extends Thread {
         }
     }
 
-//    private void readConsole(BufferedWriter writer) throws IOException {
-//        String str;
-//        while ((str = ConsoleHelper.readString()) != null) {
-//            String[] split = str.split(" ");
-//            try {
-//                String message;
-//                if (!split[0].isEmpty() && (message = deletePrefixFromMessage(split[0], str)).length() < 150) {
-//                    sendCommandAndMessage(writer, split[0], message);
-//                }
-//            } catch (SomeException e) {
-//                ConsoleHelper.writeMessage("Ввод не корректен.");
-//            }
-//        }
-//    }
-
-//    private void sendCommandAndMessage(BufferedWriter writer, String prefix, String message) throws SomeException, IOException {
-//        String commandToServer = IDsFiltering.getPrefix(prefix);
-//        sendMessage(writer, commandToServer);
-//        sendMessage(writer, message);
-//        ConsoleHelper.writeMessage(commandToServer + " " + message);
-//    }
-
     private void sendIdToReader(long sessionId) throws IOException {
         try (Socket socket = new Socket(host, localPort)) {
             BufferedWriter writeToReader = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -85,7 +64,7 @@ public class WriteMessager extends Thread {
         message = deletePrefixFromMessage(prefix, message);
         String commandToServer = IDsFiltering.getPrefix(prefix);
 
-        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer) ) {
+        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer)) {
             throw new SomeException("Incorrect Name.");
         }
 

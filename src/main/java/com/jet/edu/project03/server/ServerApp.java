@@ -1,27 +1,28 @@
 package com.jet.edu.project03.server;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Server control
- */
-import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
-
-/**
  * Server
  */
 public class ServerApp {
+
     private final ServerSocket serverSocket;
     private final List<User> users = new LinkedList<>();
     private final ExecutorService pool = Executors.newFixedThreadPool(50);
 
+
+    /**
+     * Constructor which in start server
+     */
+    public ServerApp(int port) throws IOException {
+        this.serverSocket = new ServerSocket(port);
+    }
 
     /**
      * Start port and install port and IP address
@@ -34,13 +35,6 @@ public class ServerApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Constructor which instarr server
-     */
-    public ServerApp(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
     }
 
     /**

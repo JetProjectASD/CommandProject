@@ -4,6 +4,7 @@ package com.jet.edu.project03.clients.write;
  * Start client writer
  */
 public class ClientWriter {
+
     /**
      * Start client writer and install port
      */

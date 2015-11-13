@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 
 public class SocketStreamListener implements Runnable {
 
-    private List<User> users;
+    private final List<User> users;
     private ExecutorService pool;
     private Long pseudoUserId = 0L;
 
