@@ -6,6 +6,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * New thrad for reading messages from server
+ */
 import static com.jet.edu.project03.clients.UtilitiesMessaging.*;
 
 public class ReadMessenger extends Thread {
@@ -13,11 +16,18 @@ public class ReadMessenger extends Thread {
     private int port;
     private long id;
 
+    /**
+     * Constructor for inlalling ip addres and port
+     * @param host IP address
+     */
     public ReadMessenger(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * All time listen port and write to console all messages from server
+     */
     @Override
     public void run() {
         try(ServerSocket readerServerSocket = new ServerSocket(45000);
