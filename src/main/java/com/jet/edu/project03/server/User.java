@@ -1,5 +1,6 @@
 package com.jet.edu.project03.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -17,19 +18,12 @@ public class User {
     private OutputStream userOutputStream;
 
     /**
-     * Install information about users
-     */
-    public User(String name, String room, String message) {
-        this.name = name;
-        this.room = room;
-        this.message = message;
-    }
-
-    /**
      * Constructor
      */
-    public User(Socket socket) {
+    public User(Socket socket) throws IOException {
         this.userSocket = socket;
+        this.userInputStream = socket.getInputStream();
+        this.userOutputStream = socket.getOutputStream();
     }
 
     /**

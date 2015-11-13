@@ -146,12 +146,13 @@ public class ServerApp {
          */
         @Override
         public void run() {
+            pool.submit(new SocketStreamListener());
             while (true) {
-                serverPortListener();
+                listenServerPort();
             }
         }
 
-        private void serverPortListener() {
+        private void listenServerPort() {
             try {
                 System.out.println("Wait for client connect...");
                 Socket socket = serverSocket.accept();
@@ -160,7 +161,6 @@ public class ServerApp {
                 synchronized (users) {
                     users.add(client);
                 }
-                pool.submit(new SocketStreamListener());
             } catch (IOException e) {
                 e.printStackTrace();
             }
