@@ -11,8 +11,14 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Server control
+ */
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
+/**
+ * Server
+ */
 public class ServerApp {
 
     private final ServerSocket serverSocket;
@@ -25,7 +31,7 @@ public class ServerApp {
     private long pseudoUserId = 0L;
 
     /**
-     * стартует порт и потоки запускает
+     * Start port and install port and IP address
      */
     public static void main(String[] args) {
         try {
@@ -37,10 +43,16 @@ public class ServerApp {
         }
     }
 
+    /**
+     * Constructor which instarr server
+     */
     public ServerApp(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
 
+    /**
+     * Start thread which listen port
+     */
     public void start() {
         pool.submit(new Acceptor());
         historyFileLogger = new Printer(FILE_NAME, ENCODING);
@@ -129,11 +141,13 @@ public class ServerApp {
                 }
             }
         }
-        System.out.println("send all close");
     }
 
     private class Acceptor implements Runnable {
 
+        /**
+         * All time listen port for connection clients
+         */
         @Override
         public void run() {
             while (true) {
@@ -162,12 +176,19 @@ public class ServerApp {
         private InputStream inputStream;
         private OutputStream outputStream;
 
+        /**
+         * constructor which install worker wuth clients
+         */
+
         public ClientWorker(User user) {
             this.user = user;
             this.inputStream = user.getUserInputStream();
             this.outputStream = user.getUserOutputStream();
         }
 
+        /**
+         * All time listen string from client and and send this string to all clients with local data
+         */
         @Override
         public void run() {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
