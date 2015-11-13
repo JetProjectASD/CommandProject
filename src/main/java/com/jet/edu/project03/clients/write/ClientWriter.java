@@ -8,9 +8,7 @@ public class ClientWriter {
      * Start client writer and install port
      */
     public static void main(String[] args) {
-        //ПРОВЕРКИ АРГУМЕНТОВ!!!
-        int port = 40002;
-        WriteMessager messenger = new WriteMessager("127.0.0.1", port);
+        WriteMessager messenger = new WriteMessager(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         messenger.start();
     }
 }

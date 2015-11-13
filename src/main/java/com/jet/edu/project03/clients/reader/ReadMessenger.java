@@ -12,6 +12,7 @@ import java.net.Socket;
 import static com.jet.edu.project03.clients.UtilitiesMessaging.*;
 
 public class ReadMessenger extends Thread {
+    private final int localPort;
     private String host;
     private int port;
     private long id;
@@ -20,9 +21,10 @@ public class ReadMessenger extends Thread {
      * Constructor for inlalling ip addres and port
      * @param host IP address
      */
-    public ReadMessenger(String host, int port) {
+    public ReadMessenger(String host, int port, int localPort) {
         this.host = host;
         this.port = port;
+        this.localPort = localPort;
     }
 
     /**
@@ -30,7 +32,7 @@ public class ReadMessenger extends Thread {
      */
     @Override
     public void run() {
-        try(ServerSocket readerServerSocket = new ServerSocket(45000);
+        try(ServerSocket readerServerSocket = new ServerSocket(localPort);
             Socket socket = readerServerSocket.accept()) {
             id = Long.parseLong(takeMessage(new BufferedReader(new InputStreamReader(socket.getInputStream()))));
             System.out.println("id get");

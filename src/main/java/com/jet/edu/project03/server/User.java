@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * contains all information about user - name, room, messsage
+ * contains all information about user - name, room, message
  */
 public class User {
     private String name = "";

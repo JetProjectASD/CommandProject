@@ -16,13 +16,15 @@ public class WriteMessager extends Thread {
 
     private final String host;
     private final int port;
+    private final int localPotr;
 
     /**
      * Constructor which install IP address and port
      */
-    public WriteMessager(String host, int port) {
+    public WriteMessager(String host, int port, int localPort) {
         this.host = host;
         this.port = port;
+        this.localPotr = localPort;
     }
 
     /**
@@ -35,11 +37,11 @@ public class WriteMessager extends Thread {
              BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             sendMessage(writer, "CONNECT");
-            long sessionId = Long.parseLong(takeMessage(reader)); // Тут нужно как-то обработать, а вдруг придет не лонг оО
+            long sessionId = Long.parseLong(takeMessage(reader));
             System.out.println("id get");
             System.out.println(sessionId);
             if ((takeMessage(reader).equals("OK"))) {
-                try (Socket socket = new Socket("127.0.0.1", 45000)) {
+                try (Socket socket = new Socket(host, localPotr)) {
                     BufferedWriter writeToReader = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     sendMessage(writeToReader, String.valueOf(sessionId));
                 }
