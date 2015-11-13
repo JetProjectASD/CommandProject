@@ -48,6 +48,11 @@ public class User {
         this.userInputStream = userInputStream;
     }
 
+    public void setUserOutputStream(OutputStream userOutputStream) {
+        this.userOutputStream = userOutputStream;
+    }
+
+
     public OutputStream getUserOutputStream() {
         return userOutputStream;
     }

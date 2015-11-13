@@ -63,8 +63,8 @@ public class ServerApp {
                         users.remove(user);
                         for(User user_ : users) {
                             if(user_.getId() == id) {
-                                user_.setUserInputStream(user.getUserInputStream());
                                 sendToOneClient("OK", new BufferedWriter(new OutputStreamWriter(user_.getUserOutputStream())));
+                                user_.setUserOutputStream(user.getUserOutputStream());
                                 System.out.println("user id set");
                                 System.out.println(user_.getId());
                                 return "";
@@ -90,6 +90,10 @@ public class ServerApp {
                             }
                         }
                     }
+                }
+                if (result.equals("SEND")) {
+                    result = takeMessage(reader);
+                    return result;
                 }
                 return result;
             }
