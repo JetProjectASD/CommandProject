@@ -1,8 +1,6 @@
 package com.jet.edu.project03.server;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -14,16 +12,16 @@ public class User {
     private String message;
     private long id = -1;
     private Socket userSocket;
-    private InputStream userInputStream;
-    private OutputStream userOutputStream;
+    private BufferedReader userInputStream;
+    private BufferedWriter userOutputStream;
 
     /**
      * Constructor
      */
     public User(Socket socket) throws IOException {
         this.userSocket = socket;
-        this.userInputStream = socket.getInputStream();
-        this.userOutputStream = socket.getOutputStream();
+        this.userInputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.userOutputStream = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
 
     /**
@@ -64,29 +62,21 @@ public class User {
     /**
      * Get user input stream
      */
-    public InputStream getUserInputStream() {
+    public BufferedReader getUserInputStream() {
         return userInputStream;
-    }
-
-    /**
-     * Set uer input stream
-     */
-    public void setUserInputStream(InputStream userInputStream) {
-        this.userInputStream = userInputStream;
     }
 
     /**
      * set user stream
      */
-    public void setUserOutputStream(OutputStream userOutputStream) {
+    public void setUserOutputStream(BufferedWriter userOutputStream) {
         this.userOutputStream = userOutputStream;
     }
-
 
     /**
      * set output stream
      */
-    public OutputStream getUserOutputStream() {
+    public BufferedWriter getUserOutputStream() {
         return userOutputStream;
     }
     /**

@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Start new thread and listen server socket by blocking accept method
+ */
 public class Acceptor implements Runnable {
-
-    private ExecutorService pool;
     private ServerSocket serverSocket;
     private final List<User> users;
+    Logger logger = Logger.getLogger(ServerApp.class.getName());
 
-    public Acceptor(ExecutorService pool, ServerSocket serverSocket, List<User> users) {
-
-        this.pool = pool;
+    public Acceptor(ServerSocket serverSocket, List<User> users) {
         this.serverSocket = serverSocket;
         this.users = users;
     }
@@ -24,20 +25,29 @@ public class Acceptor implements Runnable {
      */
     @Override
     public void run() {
-        pool.submit(new SocketStreamListener(users, pool));
-        while (true) {
+        ServerApp.pool.submit(new SocketStreamListener(users));
+        while (!Thread.currentThread().interrupted()) {
             listenServerPort();
+
         }
     }
 
     private void listenServerPort() {
         try {
-            System.out.println("Wait for client connect...");
-            Socket socket = serverSocket.accept();
-            System.out.println("Client connect...");
-            User client = new User(socket);
-            synchronized (users) {
-                users.add(client);
+            logger.log(Level.INFO, "Wait client connection...");
+            Socket socket = null;
+            try {
+                Thread.currentThread().sleep(10);
+                 socket = serverSocket.accept();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            logger.log(Level.INFO, "Client connected");
+            if(socket != null) {
+                User client = new User(socket);
+                synchronized (users) {
+                    users.add(client);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
