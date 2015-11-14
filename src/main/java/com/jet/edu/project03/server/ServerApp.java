@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +19,7 @@ public class ServerApp {
     private final List<User> users = new LinkedList<>();
     public final static ExecutorService pool = Executors.newFixedThreadPool(50);
     public final static List<String> lastTenChatMessages = new LinkedList<>();
-    Logger logger;
+    Logger logger = Logger.getLogger(ServerApp.class.toString());
 
     /**
      * Start port and install port and IP address
@@ -35,7 +34,6 @@ public class ServerApp {
      */
     public ServerApp(int port) {
         try {
-            loggerInit();
             this.serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Unable to open server socket with " + port + " port", e);
@@ -76,13 +74,5 @@ public class ServerApp {
 
     }*/
 
-    private void loggerInit() {
-        logger = Logger.getLogger(ServerApp.class.getName());
-        try {
-            FileHandler fileHandler = new FileHandler("ServerLog.log");
-            logger.addHandler(fileHandler);
-        } catch (IOException e) {
-            logger.log(Level.WARNING, "Log error because I/O breaking", e);
-        }
-    }
+
 }
