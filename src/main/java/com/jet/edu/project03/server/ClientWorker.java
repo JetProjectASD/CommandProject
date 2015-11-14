@@ -21,7 +21,7 @@ public class ClientWorker implements Runnable {
     private final List<User> users;
 
     /**
-     * Constructor which install current user, all users array, user id
+     * Constructor which install current user, all USERS array, user id
      */
     public ClientWorker(User user, List<User> users, Long pseudoUserId) {
         this.user = user;

@@ -13,15 +13,14 @@ import java.util.logging.Logger;
 public class Acceptor implements Runnable {
 
     Logger logger = Logger.getLogger(Acceptor.class.getName());
-    private final List<User> users;
     private ServerSocket serverSocket;
 
     /**
-     * Constructor install server socket and users
+     * Constructor install server socket and USERS
      */
-    public Acceptor(ServerSocket serverSocket, List<User> users) {
+    public Acceptor(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
-        this.users = users;
+
     }
 
     /**
@@ -29,7 +28,7 @@ public class Acceptor implements Runnable {
      */
     @Override
     public void run() {
-        ServerApp.pool.submit(new SocketStreamListener(users));
+        ServerApp.pool.submit(new SocketStreamListener(ServerApp.USERS));
         while (!Thread.currentThread().interrupted()) {
             listenServerPort();
         }
@@ -43,8 +42,8 @@ public class Acceptor implements Runnable {
             logger.log(Level.INFO, "Client connected");
             if (socket != null) {
                 User client = new User(socket);
-                synchronized (users) {
-                    users.add(client);
+                synchronized (ServerApp.USERS) {
+                    ServerApp.USERS.add(client);
                 }
             }
         } catch (IOException e) {
