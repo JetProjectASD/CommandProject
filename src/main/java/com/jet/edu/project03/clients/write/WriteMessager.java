@@ -75,7 +75,8 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkName(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 8 && !message.contains(" ");
+        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 50
+                && !message.contains(" ") && !message.isEmpty();
     }
 
     private boolean checkSend(String message, String commandToServer) {
@@ -83,11 +84,12 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkHistory(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.HISTORY.toString()) && !message.equals("");
+        return commandToServer.equals(IDsFiltering.HISTORY.toString()) && !message.isEmpty();
     }
 
     private boolean checkRoom(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.ROOM.toString()) && message.length() < 50;
+        return commandToServer.equals(IDsFiltering.ROOM.toString()) && message.length() < 50
+                && !message.contains(" ") && !message.isEmpty();
     }
 
     private void readConsole(BufferedWriter writer) throws IOException {
