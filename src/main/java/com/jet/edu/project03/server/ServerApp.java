@@ -1,7 +1,5 @@
 package com.jet.edu.project03.server;
 
-import com.jet.edu.project03.clients.ConsoleHelper;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.util.LinkedList;
@@ -16,10 +14,19 @@ import java.util.logging.Logger;
  */
 public class ServerApp {
     private final ServerSocket serverSocket;
-    private final List<User> users = new LinkedList<>();
+    /**
+     * Collection of users
+     */
+    protected static final List<User> USERS = new LinkedList<>();
+    /**
+     * pool of threads
+     */
     public final static ExecutorService pool = Executors.newFixedThreadPool(1000);
+    /**
+     * Collection of last messages
+     */
     public final static List<String> lastTenChatMessages = new LinkedList<>();
-    Logger logger = Logger.getLogger(ServerApp.class.toString());
+    private Logger logger = Logger.getLogger(ServerApp.class.toString());
 
     /**
      * Start port and install port and IP address
@@ -46,7 +53,7 @@ public class ServerApp {
      */
     public void start() {
         logger.log(Level.INFO, "Server start successfully");
-        pool.submit(new Acceptor(serverSocket, users));
+        pool.submit(new Acceptor(serverSocket));
 //        new Thread(() -> {
 //            String string = ConsoleHelper.readString();
 //            if(string.equals("stop")) {
@@ -62,8 +69,8 @@ public class ServerApp {
     /*private void stop() throws IOException {
         pool.shutdown();
         System.out.println("pool shutdown");
-//        synchronized (users) {
-//            for(User user : users) {
+//        synchronized (USERS) {
+//            for(User user : USERS) {
 //                if(!user.getUserSocket().isClosed()) {
 //                    user.getUserSocket().close();
 //                }

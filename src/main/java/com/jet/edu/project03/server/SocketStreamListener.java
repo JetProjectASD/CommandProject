@@ -16,7 +16,7 @@ public class SocketStreamListener implements Runnable {
     private Long pseudoUserId = 0L;
 
     /**
-     * Constructor which install users
+     * Constructor which install USERS
      * @param users
      */
     public SocketStreamListener(List<User> users) {
