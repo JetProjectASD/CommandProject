@@ -18,7 +18,7 @@ public enum IDsFiltering {
     }
 
     /**
-     * separate preffiks from message
+     * separate prefix from message
      * @param message which user write to console
      */
     public static String getPrefix(String message) throws SomeException {

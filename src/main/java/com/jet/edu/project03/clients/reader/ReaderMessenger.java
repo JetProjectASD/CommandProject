@@ -17,7 +17,7 @@ public class ReaderMessenger {
     private BufferedWriter writer;
 
     /**
-     * Consctructor which install read and write stream
+     * Constructor which install read and write stream
      */
     public ReaderMessenger(BufferedReader reader, BufferedWriter writer) {
         this.reader = reader;
