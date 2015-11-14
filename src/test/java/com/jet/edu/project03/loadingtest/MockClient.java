@@ -77,7 +77,7 @@ public class MockClient extends Thread {
 
     private void writeAndReadMessage(BufferedWriter writerForWriter, BufferedReader readerForReader) throws IOException {
         int count = 0;
-        while (true) {
+        //while (true) {
             String messageCurrentClient = message + count;
             UtilitiesMessaging.sendMessage(writerForWriter, "SEND");
             long startTime = System.currentTimeMillis();
@@ -87,7 +87,7 @@ public class MockClient extends Thread {
 
             ConsoleHelper.writeMessage("user: " + name + "; message: " + messageCurrentClient + "; Response time: " + endTime);
             count++;
-        }
+       // }
     }
 
     private long getTimeReadResponse(BufferedReader readerForReader, String messageCurrentClient, long startTime) throws IOException {
