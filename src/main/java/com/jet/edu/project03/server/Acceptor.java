@@ -11,9 +11,10 @@ import java.util.logging.Logger;
  * Start new thread and listen server socket by blocking accept method
  */
 public class Acceptor implements Runnable {
-    private ServerSocket serverSocket;
+
+    Logger logger = Logger.getLogger(Acceptor.class.getName());
     private final List<User> users;
-    Logger logger = Logger.getLogger(ServerApp.class.getName());
+    private ServerSocket serverSocket;
 
     public Acceptor(ServerSocket serverSocket, List<User> users) {
         this.serverSocket = serverSocket;
@@ -28,7 +29,6 @@ public class Acceptor implements Runnable {
         ServerApp.pool.submit(new SocketStreamListener(users));
         while (!Thread.currentThread().interrupted()) {
             listenServerPort();
-
         }
     }
 
@@ -36,12 +36,7 @@ public class Acceptor implements Runnable {
         try {
             logger.log(Level.INFO, "Wait client connection...");
             Socket socket = null;
-            try {
-                Thread.currentThread().sleep(10);
-                 socket = serverSocket.accept();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            socket = serverSocket.accept();
             logger.log(Level.INFO, "Client connected");
             if(socket != null) {
                 User client = new User(socket);
@@ -50,7 +45,7 @@ public class Acceptor implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Can`t connect with client", e);
         }
     }
 }

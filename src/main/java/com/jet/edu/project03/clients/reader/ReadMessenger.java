@@ -10,7 +10,7 @@ import static com.jet.edu.project03.clients.UtilitiesMessaging.sendMessage;
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 /**
- * New thrad for reading messages from server
+ * New thread for reading messages from server
  */
 
 public class ReadMessenger extends Thread {
@@ -20,7 +20,8 @@ public class ReadMessenger extends Thread {
     private long id;
 
     /**
-     * Constructor for inlalling ip addres and port
+     * Constructor for initialling ip address and port
+     *
      * @param host IP address
      */
     public ReadMessenger(String host, int port, int localPort) {
@@ -65,8 +66,8 @@ public class ReadMessenger extends Thread {
     }
 
     private void startLocalServerForSynchronizationLocalClients() {
-        try(ServerSocket readerServerSocket = new ServerSocket(localPort);
-            Socket socket = readerServerSocket.accept()) {
+        try (ServerSocket readerServerSocket = new ServerSocket(localPort);
+             Socket socket = readerServerSocket.accept()) {
             id = Long.parseLong(takeMessage(new BufferedReader(new InputStreamReader(socket.getInputStream()))));
         } catch (IOException e) {
             e.printStackTrace();

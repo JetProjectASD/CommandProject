@@ -2,13 +2,14 @@ package com.jet.edu.project03.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SocketStreamListener implements Runnable {
 
-    private List<User> users;
+    private Logger logger = Logger.getLogger(SocketStreamListener.class.getName());
+    private final List<User> users;
     private Long pseudoUserId = 0L;
 
     public SocketStreamListener(List<User> users) {
@@ -24,7 +25,7 @@ public class SocketStreamListener implements Runnable {
             try {
                 Thread.currentThread().sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "Error when thread sleep", e);
             }
         }
     }
@@ -38,7 +39,7 @@ public class SocketStreamListener implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Can`t get input stream from user");
         }
     }
 

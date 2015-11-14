@@ -5,11 +5,13 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.jet.edu.project03.server.ServerApp.*;
 
 public class ChatHistoryPrinter implements Runnable {
-
+    private Logger logger = Logger.getLogger(ChatHistoryPrinter.class.getName());
     private String fileName;
     private String encoding;
     private final static int MAX_BUFFER_SIZE = 9;
@@ -43,7 +45,7 @@ public class ChatHistoryPrinter implements Runnable {
             streamWriter.write(message);
             streamWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Cant record buffer messages to file", e);
         }
     }
 

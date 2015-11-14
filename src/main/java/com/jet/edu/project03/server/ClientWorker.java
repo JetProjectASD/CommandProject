@@ -3,10 +3,14 @@ package com.jet.edu.project03.server;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 public class ClientWorker implements Runnable {
+
+    private Logger logger = Logger.getLogger(ClientWorker.class.getName());
     private BufferedReader inputStream;
     private BufferedWriter outputStream;
     private User user;
@@ -27,7 +31,7 @@ public class ClientWorker implements Runnable {
         try {
             message = readStringFromClient(user, inputStream, outputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Cant get information from client. Possible problems Socket Closed, I/O Closed");
         }
         if (checkUserInfoAndMessageAvailable(message)) {
             LocalDateTime dateTime = LocalDateTime.now();
@@ -118,7 +122,7 @@ public class ClientWorker implements Runnable {
                         writer.newLine();
                         writer.flush();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.log(Level.WARNING, user.getName() + " cant send message", e);
                     }
                 }
             }
