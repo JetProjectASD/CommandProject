@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
+/**
+ * Class which handle clients commands
+ */
 public class ClientWorker implements Runnable {
 
     private Logger logger = Logger.getLogger(ClientWorker.class.getName());
@@ -17,6 +20,9 @@ public class ClientWorker implements Runnable {
     private long pseudoUserId;
     private final List<User> users;
 
+    /**
+     * Constructor which install current user, all users array, user id
+     */
     public ClientWorker(User user, List<User> users, Long pseudoUserId) {
         this.user = user;
         this.users = users;
@@ -25,6 +31,9 @@ public class ClientWorker implements Runnable {
         this.pseudoUserId = pseudoUserId;
     }
 
+    /**
+     * Handle commands
+     */
     @Override
     public void run() {
         String message = "";

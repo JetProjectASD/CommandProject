@@ -6,16 +6,26 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class which listen port
+ */
 public class SocketStreamListener implements Runnable {
 
     private Logger logger = Logger.getLogger(SocketStreamListener.class.getName());
     private final List<User> users;
     private Long pseudoUserId = 0L;
 
+    /**
+     * Constructor which install users
+     * @param users
+     */
     public SocketStreamListener(List<User> users) {
         this.users = users;
     }
 
+    /**
+     * Listen port
+     */
     @Override
     public void run() {
         while (!Thread.currentThread().interrupted()) {

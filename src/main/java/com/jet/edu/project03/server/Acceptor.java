@@ -38,7 +38,7 @@ public class Acceptor implements Runnable {
             Socket socket = null;
             socket = serverSocket.accept();
             logger.log(Level.INFO, "Client connected");
-            if(socket != null) {
+            if (socket != null) {
                 User client = new User(socket);
                 synchronized (users) {
                     users.add(client);
@@ -48,4 +48,5 @@ public class Acceptor implements Runnable {
             logger.log(Level.WARNING, "Can`t connect with client", e);
         }
     }
+
 }
