@@ -7,7 +7,6 @@ import java.net.Socket;
  * contains all information about user - name, room, message
  */
 public class User {
-
     private String name = "";
     private String room;
     private String message;
@@ -33,13 +32,6 @@ public class User {
     }
 
     /**
-     * set name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get room
      */
     public String getRoom() {
@@ -47,24 +39,10 @@ public class User {
     }
 
     /**
-     * set room
-     */
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    /**
      * Get message
      */
     public String getMessage() {
         return message;
-    }
-
-    /**
-     * set set Message
-     */
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     /**
@@ -82,30 +60,10 @@ public class User {
     }
 
     /**
-     * set set ID
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Get user input stream
      */
     public BufferedReader getUserInputStream() {
         return userInputStream;
-    }
-
-     /**
-      * Set uer input stream
-     */
-    public void setUserInputStream(BufferedReader userInputStream) {
-        this.userInputStream = userInputStream;}
-
-    /**
-     * set output stream
-     */
-    public BufferedWriter getUserOutputStream() {
-        return userOutputStream;
     }
 
     /**
@@ -114,4 +72,37 @@ public class User {
     public void setUserOutputStream(BufferedWriter userOutputStream) {
         this.userOutputStream = userOutputStream;
     }
+
+    /**
+     * set output stream
+     */
+    public BufferedWriter getUserOutputStream() {
+        return userOutputStream;
+    }
+    /**
+     * set name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    /**
+     * set room
+     */
+    public void setRoom(String room) {
+        this.room = room;
+    }
+    /**
+     * set set Message
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    /**
+     * set set ID
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
 }

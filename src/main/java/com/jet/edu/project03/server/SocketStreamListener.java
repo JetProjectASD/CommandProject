@@ -2,11 +2,13 @@ package com.jet.edu.project03.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class SocketStreamListener implements Runnable {
 
-    private final List<User> users;
+    private List<User> users;
     private Long pseudoUserId = 0L;
 
     public SocketStreamListener(List<User> users) {

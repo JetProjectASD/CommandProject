@@ -11,9 +11,10 @@ import java.util.logging.Logger;
  * Start new thread and listen server socket by blocking accept method
  */
 public class Acceptor implements Runnable {
-    Logger logger = Logger.getLogger(ServerApp.class.getName());
-    private final List<User> users;
     private ServerSocket serverSocket;
+    private final List<User> users;
+    Logger logger = Logger.getLogger(ServerApp.class.getName());
+
     public Acceptor(ServerSocket serverSocket, List<User> users) {
         this.serverSocket = serverSocket;
         this.users = users;

@@ -10,7 +10,7 @@ import static com.jet.edu.project03.clients.UtilitiesMessaging.sendMessage;
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 /**
- * New thread for write user messages in console
+ * New thread for wtite user messages in console
  */
 
 public class WriteMessager extends Thread {
@@ -29,8 +29,7 @@ public class WriteMessager extends Thread {
     }
 
     /**
-     * Write any messages in the console while user
-     * not write "exit" - command for stop client
+     * Write any messages in the console while user not write "exit" - command for stop client
      */
     @Override
     public void run() {
@@ -64,7 +63,8 @@ public class WriteMessager extends Thread {
         message = deletePrefixFromMessage(prefix, message);
         String commandToServer = IDsFiltering.getPrefix(prefix);
 
-        if (checkCommand(message, commandToServer)) {
+        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer)
+                && !checkHistory(message, commandToServer) && !checkRoom(message, commandToServer)) {
             throw new SomeException("Incorrect Name.");
         }
 
@@ -73,13 +73,8 @@ public class WriteMessager extends Thread {
         ConsoleHelper.writeMessage(commandToServer + " " + message);
     }
 
-    private boolean checkCommand(String message, String commandToServer) {
-        return !checkName(message, commandToServer) && !checkSend(message, commandToServer)
-                && !checkHistory(message, commandToServer) && !checkRoom(message, commandToServer);
-    }
-
     private boolean checkName(String message, String commandToServer) {
-        return checkFull(message, commandToServer, IDsFiltering.NAME.toString());
+        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 8 && !message.contains(" ");
     }
 
     private boolean checkSend(String message, String commandToServer) {
@@ -87,16 +82,11 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkHistory(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.HISTORY.toString()) && !message.isEmpty();
+        return commandToServer.equals(IDsFiltering.HISTORY.toString()) && !message.equals("");
     }
 
     private boolean checkRoom(String message, String commandToServer) {
-        return checkFull(message, commandToServer, IDsFiltering.ROOM.toString());
-    }
-
-    private boolean checkFull(String message, String commandToServer, String anObject) {
-        return commandToServer.equals(anObject) && message.length() < 50
-                && !message.contains(" ") && !message.isEmpty();
+        return commandToServer.equals(IDsFiltering.ROOM.toString()) && message.length() < 50;
     }
 
     private void readConsole(BufferedWriter writer) throws IOException {
