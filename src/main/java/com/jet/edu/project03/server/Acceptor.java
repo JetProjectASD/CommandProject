@@ -16,6 +16,9 @@ public class Acceptor implements Runnable {
     private final List<User> users;
     private ServerSocket serverSocket;
 
+    /**
+     * Constructor install server socket and users
+     */
     public Acceptor(ServerSocket serverSocket, List<User> users) {
         this.serverSocket = serverSocket;
         this.users = users;

@@ -13,7 +13,7 @@ public class LoadingTest {
         // args[2] - port
         for (int i = 0; i < Integer.parseInt(args[0]); i++) {
             executor.submit(new MockClient(args[1], Integer.parseInt(args[2]), "usname" + i, "myRoom", "test message "));
-            Thread.sleep(100);
+            Thread.sleep(150);
         }
 
     }

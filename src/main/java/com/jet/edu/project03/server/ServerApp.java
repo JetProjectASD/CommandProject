@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class ServerApp {
     private final ServerSocket serverSocket;
     private final List<User> users = new LinkedList<>();
-    public final static ExecutorService pool = Executors.newFixedThreadPool(50);
+    public final static ExecutorService pool = Executors.newFixedThreadPool(1000);
     public final static List<String> lastTenChatMessages = new LinkedList<>();
     Logger logger = Logger.getLogger(ServerApp.class.toString());
 
