@@ -74,7 +74,8 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkName(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 8 && !message.contains(" ");
+        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 50 && !message.contains(" ")
+                && !message.isEmpty();
     }
 
     private boolean checkSend(String message, String commandToServer) {
