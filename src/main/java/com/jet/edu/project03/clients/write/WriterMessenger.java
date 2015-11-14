@@ -8,8 +8,13 @@ import java.io.IOException;
 
 import static com.jet.edu.project03.clients.UtilitiesMessaging.sendMessage;
 
+/**
+ * Write message
+ */
 public class WriterMessenger {
-
+    /**
+     * read the console
+     */
     public void readConsole(BufferedWriter writer) throws IOException {
         String str;
         while ((str = ConsoleHelper.readString()) != null) {
