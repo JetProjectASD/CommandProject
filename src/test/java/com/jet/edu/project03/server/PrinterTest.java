@@ -9,7 +9,7 @@ public class PrinterTest {
 
     @Test
     public void shouldWriteInFileWhenPrintString() throws IOException {
-        Printer printer = new Printer("test.txt", "utf-8");
+        ChatHistoryPrinter printer = new ChatHistoryPrinter("test.txt", "utf-8");
         String testString = "";
         printer.print("test string" + System.lineSeparator());
         testString = testString.concat("test string" + System.lineSeparator());

@@ -64,7 +64,8 @@ public class WriteMessager extends Thread {
         message = deletePrefixFromMessage(prefix, message);
         String commandToServer = IDsFiltering.getPrefix(prefix);
 
-        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer)) {
+        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer)
+                && !checkHistory(message, commandToServer) && !checkRoom(message, commandToServer)) {
             throw new SomeException("Incorrect Name.");
         }
 
@@ -74,11 +75,19 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkName(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 50 && !message.contains(" ");
+        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 8 && !message.contains(" ");
     }
 
     private boolean checkSend(String message, String commandToServer) {
         return commandToServer.equals(IDsFiltering.SEND.toString()) && message.length() < 150;
+    }
+
+    private boolean checkHistory(String message, String commandToServer) {
+        return commandToServer.equals(IDsFiltering.HISTORY.toString()) && !message.equals("");
+    }
+
+    private boolean checkRoom(String message, String commandToServer) {
+        return commandToServer.equals(IDsFiltering.ROOM.toString()) && message.length() < 50;
     }
 
     private void readConsole(BufferedWriter writer) throws IOException {

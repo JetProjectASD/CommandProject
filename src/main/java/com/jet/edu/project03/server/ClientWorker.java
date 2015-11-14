@@ -2,108 +2,103 @@ package com.jet.edu.project03.server;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import static com.jet.edu.project03.clients.UtilitiesMessaging.takeMessage;
 
 public class ClientWorker implements Runnable {
-
-    private final List<String> messageBuffer = new LinkedList<>();
+    private BufferedReader inputStream;
+    private BufferedWriter outputStream;
+    private User user;
+    private long pseudoUserId;
     private final List<User> users;
 
-    private long pseudoUserId;
-    private InputStream inputStream;
-    private OutputStream outputStream;
-    private User user;
-    private ExecutorService pool;
-
-    public ClientWorker(User user, List<User> users, ExecutorService pool, Long pseudoUserId) {
+    public ClientWorker(User user, List<User> users, Long pseudoUserId) {
         this.user = user;
         this.users = users;
         this.inputStream = user.getUserInputStream();
         this.outputStream = user.getUserOutputStream();
-        this.pool = pool;
         this.pseudoUserId = pseudoUserId;
     }
 
     @Override
     public void run() {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
         String message = "";
         try {
-            message = readStringFromClient(user, bufferedReader, bufferedWriter);
+            message = readStringFromClient(user, inputStream, outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(user.getName() + " " + user.getId() + " " + message);
-        if (!user.getName().equals("") && user.getId() != -1 && !message.equals("")) {
-            System.out.println("send message " + message);
+        if (checkUserInfoAndMessageAvailable(message)) {
             LocalDateTime dateTime = LocalDateTime.now();
-            String sendString = getDateTimeFormat(dateTime) + " " + user.getName() + ": " + message;
-            synchronized (messageBuffer) {
-                messageBuffer.add(sendString);
-            }
-            System.out.println("after sync");
-            pool.submit(new BufferSender(messageBuffer));
-            sendToAllClients(sendString);
-            System.out.println("after send all");
+            String sendString = getDateTimeFormat(dateTime) + " ["+user.getRoom()+"] " + user.getName() + ": " + message;
+            sendToAllClients(sendString, user.getRoom());
+            addInLastMessagesList(sendString);
+            ServerApp.pool.submit(new ChatHistoryPrinter("serverChatLog.txt", "UTF-8"));
         }
     }
 
+    private void addInLastMessagesList(String sendString) {
+        synchronized (ServerApp.lastTenChatMessages) {
+            ServerApp.lastTenChatMessages.add(sendString);
+        }
+    }
+
+    private boolean checkUserInfoAndMessageAvailable(String message) {
+        return !user.getName().equals("") && user.getId() != -1 && !message.equals("") && !user.getRoom().isEmpty();
+    }
+
     private String readStringFromClient(User user, BufferedReader reader, BufferedWriter writer) throws IOException {
-        while (true) {
+        while (!Thread.currentThread().interrupted()) {
             String result = takeMessage(reader);
             if (result.equals("CONNECT")) {
                 sendToOneClient(pseudoUserId + "", writer);
                 sendToOneClient("OK", writer);
-                System.out.println(">>>>>>>>>>>>>>>>>>>>" + pseudoUserId);
                 user.setId(this.pseudoUserId);
                 return "";
             } else if (result.equals("READER USER_ID")) {
                 result = takeMessage(reader);
-                System.out.println(result);
                 long id = Long.parseLong(result);
                 synchronized (users) {
                     users.remove(user);
-                    for (User user_ : users) {
-                        if (user_.getId() == id) {
-                            sendToOneClient("OK", new BufferedWriter(new OutputStreamWriter(user.getUserOutputStream())));
+                    for(User user_ : users) {
+                        if(user_.getId() == id) {
+                            sendToOneClient("OK", user.getUserOutputStream());
                             user_.setUserOutputStream(user.getUserOutputStream());
-                            System.out.println("user id set");
-                            System.out.println(user_.getId());
                             return "";
                         }
                     }
                 }
             } else if (result.contains("NAME")) {
-                System.out.println("name block start");
                 result = takeMessage(reader);
                 System.out.println(result);
                 synchronized (users) {
-                    ////////////////////// УЗНАТЬ ПОЧЕМУ РАБОТАЕТ?!//////////////////////////////////////
-                    for (User user_ : users) {
-                        if (user_.getName().equals(result)) {
-                            System.out.println("name non set");
-                            sendToOneClient("Name is occupied", new BufferedWriter(new OutputStreamWriter(user_.getUserOutputStream())));
+                    for(User user_ : users) {
+                        if(user_.getName().equals(result)) {
+                            sendToOneClient("Name is occupied", user.getUserOutputStream());
                             return "";
                         } else {
                             user.setName(result);
-                            System.out.println("Set user name");
-                            sendToOneClient("OK", new BufferedWriter(new OutputStreamWriter(user_.getUserOutputStream())));
+                            sendToOneClient("OK", user.getUserOutputStream());
                             return "";
                         }
                     }
-                    //////////////////////////////////////////////////////////////////////////////////////
                 }
             } else if (result.equals("SEND")) {
                 result = takeMessage(reader);
                 return result;
+            } else if (result.equals("HISTORY")) {
+                String history = new ChatHistoryPrinter("serverChatLog.txt", "UTF-8").getHistoryMessages();
+                sendToOneClient(history, user.getUserOutputStream());
+                return "";
+            } else if (result.equals("ROOM")) {
+                String roomName = takeMessage(reader);
+                user.setRoom(roomName);
+                return "";
             }
             return result;
         }
+        return "";
     }
 
     private void sendToOneClient(String message, BufferedWriter writer) throws IOException {
@@ -112,17 +107,19 @@ public class ClientWorker implements Runnable {
         writer.flush();
     }
 
-    private void sendToAllClients(String message) {
+    private void sendToAllClients(String message, String roomName) {
         System.out.println("send all method start");
         synchronized (users) {
             for (User user : users) {
-                try {
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(user.getUserOutputStream()));
-                    writer.write(message);
-                    writer.newLine();
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!user.getName().equals("") && user.getRoom().equals(roomName)) {
+                    try {
+                        BufferedWriter writer = user.getUserOutputStream();
+                        writer.write(message);
+                        writer.newLine();
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
