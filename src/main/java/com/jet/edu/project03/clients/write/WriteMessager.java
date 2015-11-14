@@ -64,8 +64,7 @@ public class WriteMessager extends Thread {
         message = deletePrefixFromMessage(prefix, message);
         String commandToServer = IDsFiltering.getPrefix(prefix);
 
-        if (!checkName(message, commandToServer) && !checkSend(message, commandToServer)
-                && !checkHistory(message, commandToServer) && !checkRoom(message, commandToServer)) {
+        if (checkCommand(message, commandToServer)) {
             throw new SomeException("Incorrect Name.");
         }
 
@@ -74,9 +73,13 @@ public class WriteMessager extends Thread {
         ConsoleHelper.writeMessage(commandToServer + " " + message);
     }
 
+    private boolean checkCommand(String message, String commandToServer) {
+        return !checkName(message, commandToServer) && !checkSend(message, commandToServer)
+                && !checkHistory(message, commandToServer) && !checkRoom(message, commandToServer);
+    }
+
     private boolean checkName(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.NAME.toString()) && message.length() < 50
-                && !message.contains(" ") && !message.isEmpty();
+        return checkFull(message, commandToServer, IDsFiltering.NAME.toString());
     }
 
     private boolean checkSend(String message, String commandToServer) {
@@ -88,7 +91,11 @@ public class WriteMessager extends Thread {
     }
 
     private boolean checkRoom(String message, String commandToServer) {
-        return commandToServer.equals(IDsFiltering.ROOM.toString()) && message.length() < 50
+        return checkFull(message, commandToServer, IDsFiltering.ROOM.toString());
+    }
+
+    private boolean checkFull(String message, String commandToServer, String anObject) {
+        return commandToServer.equals(anObject) && message.length() < 50
                 && !message.contains(" ") && !message.isEmpty();
     }
 
